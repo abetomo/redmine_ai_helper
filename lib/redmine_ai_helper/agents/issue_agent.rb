@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../base_agent"
+require "redmine_ai_helper/tools/semantic_search_tools"
 
 module RedmineAiHelper
   module Agents
@@ -14,7 +15,9 @@ module RedmineAiHelper
 
       # Backstory for the IssueAgent
       def backstory
-        if AiHelperSetting.vector_search_enabled?
+        if semantic_search_available?
+          search_answer_instruction = I18n.t("ai_helper.prompts.issue_agent.search_answer_instruction_with_semantic")
+        elsif AiHelperSetting.vector_search_enabled?
           search_answer_instruction = I18n.t("ai_helper.prompts.issue_agent.search_answer_instruction_with_vector")
         else
           search_answer_instruction = I18n.t("ai_helper.prompts.issue_agent.search_answer_instruction")
@@ -29,6 +32,9 @@ module RedmineAiHelper
         providers = []
         if AiHelperSetting.vector_search_enabled?
           providers << RedmineAiHelper::Tools::VectorTools
+        end
+        if semantic_search_available?
+          providers << RedmineAiHelper::Tools::SemanticSearchTools
         end
         providers << RedmineAiHelper::Tools::IssueTools
         providers << RedmineAiHelper::Tools::ProjectTools
@@ -381,6 +387,12 @@ module RedmineAiHelper
       end
 
       private
+
+      def semantic_search_available?
+        defined?(FullTextSearch::SemanticIndex) &&
+          Setting.plugin_full_text_search.enable_semantic_search? &&
+          FullTextSearch::SemanticIndex.exist?
+      end
 
       # Fetch todo issues based on options
       # @param options [Hash] Options for filtering issues

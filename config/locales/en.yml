@@ -163,6 +163,7 @@ en:
       issue_agent:
         search_answer_instruction: "For tasks such as finding multiple issues that match certain conditions, like 'Find issues that meet these conditions' or 'Show me issues with these criteria,' please use the search_issues tool to retrieve and return a list of issues."
         search_answer_instruction_with_vector: "When searching for issues, use the appropriate tool: For conceptual/semantic searches (e.g., 'issues related to exceptions', 'performance problems', 'login bugs'), use vector search (ask_with_filter). For explicit filter conditions (e.g., 'status is closed', 'assigned to someone', 'updated this month'), use search_issues."
+        search_answer_instruction_with_semantic: "When searching for issues, use the appropriate tool: For conceptual/semantic searches (e.g., 'authentication failure bug', 'login-related bugs', 'performance problems' — where the user describes a problem in their own words), use the semantic_search_issues tool. For explicit filter conditions (e.g., 'status is closed', 'assigned to someone', 'updated this month'), use search_issues. Use only issue numbers returned by tools; never invent them."
       leader_agent:
         generate_final_response: "All agents have completed their tasks. Please create the final response for the user. If your response includes a question with discrete choices, remember to append the <!--AIHELPER_OPTIONS:{...}--> block at the very end."
     mcp:

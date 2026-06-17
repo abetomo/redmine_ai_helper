@@ -77,6 +77,8 @@ module RedmineAiHelper
         tool_class.define_singleton_method(:name) { tool_class_name }
         tool_class.define_singleton_method(:to_s) { tool_class_name }
 
+        tool_class.define_method(:name) { func_name.to_s }
+
         tool_classes << tool_class
 
         # Store function metadata for backward compatibility (function_schemas)
